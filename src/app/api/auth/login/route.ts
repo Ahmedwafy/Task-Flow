@@ -8,8 +8,10 @@ import jwt from "jsonwebtoken";
 if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET is not defined in environment variables");
 }
-const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET as string;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+
+const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
+const JWT_EXPIRES_IN: jwt.SignOptions["expiresIn"] =
+  (process.env.JWT_EXPIRES_IN as jwt.SignOptions["expiresIn"]) || "7d";
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,9 +41,7 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       JWT_SECRET,
-      {
-        expiresIn: JWT_EXPIRES_IN,
-      }
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     const res = NextResponse.json({
