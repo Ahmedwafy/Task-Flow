@@ -5,6 +5,12 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
+type ParamsContext = {
+  params: {
+    id: string;
+  };
+};
+
 function verifyUser(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   if (!token) return null;
@@ -17,10 +23,7 @@ function verifyUser(req: NextRequest) {
 }
 
 // 🔹 تعديل مهمة
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, { params }: ParamsContext) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -43,10 +46,7 @@ export async function PUT(
 }
 
 // 🔹 حذف مهمة
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: ParamsContext) {
   await connectToDatabase();
 
   const user = verifyUser(req);
