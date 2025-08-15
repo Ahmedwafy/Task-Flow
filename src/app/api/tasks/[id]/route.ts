@@ -16,14 +16,11 @@ function verifyUser(req: NextRequest) {
   }
 }
 
-interface RouteContext {
-  params: {
-    id: string;
-  };
-}
-
 // 🔹 تعديل مهمة
-export async function PUT(req: NextRequest, context: RouteContext) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -33,7 +30,7 @@ export async function PUT(req: NextRequest, context: RouteContext) {
 
   const { title, description, status } = await req.json();
   const updatedTask = await Task.findOneAndUpdate(
-    { _id: context.params.id, userId: user.id },
+    { _id: params.id, userId: user.id },
     { title, description, status },
     { new: true }
   );
@@ -46,7 +43,10 @@ export async function PUT(req: NextRequest, context: RouteContext) {
 }
 
 // 🔹 حذف مهمة
-export async function DELETE(req: NextRequest, context: RouteContext) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -55,7 +55,7 @@ export async function DELETE(req: NextRequest, context: RouteContext) {
   }
 
   const deletedTask = await Task.findOneAndDelete({
-    _id: context.params.id,
+    _id: params.id,
     userId: user.id,
   });
 
