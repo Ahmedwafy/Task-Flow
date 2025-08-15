@@ -1,0 +1,76 @@
+/* src/styles/Dashboard.module.scss */
+.dashboard {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskForm {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.taskForm input,
+.taskForm textarea,
+.taskForm select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.taskForm button {
+  padding: 10px;
+  background: #4cafef;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tasksTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tasksTable th,
+.tasksTable td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.filterBar {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.activeFilter {
+  background: #4cafef;
+  color: white;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  background: transparent;
+}
+.actions .btn {
+  padding: 10px 15px;
+  border: 1px black solid;
+  border-radius: 6px;
+  cursor: pointer;
+}/*# sourceMappingURL=Dashboard.module.css.map */

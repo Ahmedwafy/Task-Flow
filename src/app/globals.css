@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 20px;
+  background: rgb(239, 239, 239);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  .container {
+    margin: 40px auto;
+    padding: 15px;
+    max-width: 90%;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 95%;
+  }
+}/*# sourceMappingURL=globals.css.map */

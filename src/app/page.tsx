@@ -1,5 +1,4 @@
-// import Image from "next/image";
-
+"use client";
 import Link from "next/link";
 import TextType from "@/app/components/TextType/TextType";
 import styles from "./Home.module.scss";
