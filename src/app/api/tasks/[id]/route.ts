@@ -1,5 +1,3 @@
-// src/app/api/tasks/[id]/route.ts
-// PUT + DELETE
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Task from "@/models/Task";
@@ -18,11 +16,14 @@ function verifyUser(req: NextRequest) {
   }
 }
 
+interface RouteContext {
+  params: {
+    id: string;
+  };
+}
+
 // 🔹 تعديل مهمة
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, context: RouteContext) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -32,7 +33,7 @@ export async function PUT(
 
   const { title, description, status } = await req.json();
   const updatedTask = await Task.findOneAndUpdate(
-    { _id: params.id, userId: user.id },
+    { _id: context.params.id, userId: user.id },
     { title, description, status },
     { new: true }
   );
@@ -45,10 +46,7 @@ export async function PUT(
 }
 
 // 🔹 حذف مهمة
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: RouteContext) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -57,9 +55,10 @@ export async function DELETE(
   }
 
   const deletedTask = await Task.findOneAndDelete({
-    _id: params.id,
+    _id: context.params.id,
     userId: user.id,
   });
+
   if (!deletedTask) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
