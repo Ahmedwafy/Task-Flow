@@ -11,13 +11,12 @@ if (!MONGODB_URI) {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoose:
     | { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null }
     | undefined;
 }
 
-let cached = global._mongoose ?? { conn: null, promise: null };
+const cached = global._mongoose ?? { conn: null, promise: null };
 
 async function connectToDatabase() {
   if (cached.conn) {
