@@ -5,8 +5,13 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET as string;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
+}
+
+const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN: jwt.SignOptions["expiresIn"] =
+  (process.env.JWT_EXPIRES_IN as jwt.SignOptions["expiresIn"]) || "7d";
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,9 +38,7 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       JWT_SECRET,
-      {
-        expiresIn: JWT_EXPIRES_IN,
-      }
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     const res = NextResponse.json({
@@ -47,7 +50,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days (مطابقة لـ JWT_EXPIRES_IN)
+      maxAge: 60 * 60 * 24 * 7,
       secure: process.env.NODE_ENV === "production",
     });
 
