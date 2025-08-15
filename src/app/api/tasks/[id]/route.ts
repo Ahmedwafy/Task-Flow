@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+// النوع الرسمي للـ params غير متوفر في next/server، استخدم النوع المناسب مباشرةً
 import connectToDatabase from "@/lib/mongodb";
 import Task from "@/models/Task";
 import jwt from "jsonwebtoken";
