@@ -1,0 +1,45 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  color: #1f2937;
+  padding: 2rem;
+  z-index: 10;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #111827;
+    letter-spacing: 2px;
+  }
+
+  a {
+    text-decoration: none;
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #4338ca;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+
+  .links {
+    display: flex;
+    gap: 1rem;
+  }
+}

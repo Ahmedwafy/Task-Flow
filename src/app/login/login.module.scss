@@ -1,0 +1,59 @@
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  text-decoration: none;
+  color: #111827;
+  font-weight: 400;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 10px;
+    background: #2d90f2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: #2376c6;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 480px) {
+  .form {
+    gap: 12px;
+
+    input,
+    button {
+      font-size: 13px;
+      padding: 8px;
+    }
+  }
+}
