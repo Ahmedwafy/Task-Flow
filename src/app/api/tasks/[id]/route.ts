@@ -16,11 +16,14 @@ function verifyUser(req: NextRequest) {
   }
 }
 
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
 // 🔹 تعديل مهمة
-export async function PUT(
-  req: NextRequest,
-  context: any // 👈 علشان نتجنب خطأ الـ type
-) {
+export async function PUT(req: NextRequest, { params }: RouteParams) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -30,7 +33,7 @@ export async function PUT(
 
   const { title, description, status } = await req.json();
   const updatedTask = await Task.findOneAndUpdate(
-    { _id: context.params.id, userId: user.id },
+    { _id: params.id, userId: user.id },
     { title, description, status },
     { new: true }
   );
@@ -43,7 +46,7 @@ export async function PUT(
 }
 
 // 🔹 حذف مهمة
-export async function DELETE(req: NextRequest, context: any) {
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -52,7 +55,7 @@ export async function DELETE(req: NextRequest, context: any) {
   }
 
   const deletedTask = await Task.findOneAndDelete({
-    _id: context.params.id,
+    _id: params.id,
     userId: user.id,
   });
 
