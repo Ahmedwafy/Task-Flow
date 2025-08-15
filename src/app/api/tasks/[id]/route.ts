@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-// النوع الرسمي للـ params غير متوفر في next/server، استخدم النوع المناسب مباشرةً
 import connectToDatabase from "@/lib/mongodb";
 import Task from "@/models/Task";
 import jwt from "jsonwebtoken";
@@ -18,10 +17,7 @@ function verifyUser(req: NextRequest) {
 }
 
 // 🔹 تعديل مهمة
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, context: any) {
   await connectToDatabase();
 
   const user = verifyUser(req);
@@ -44,10 +40,7 @@ export async function PUT(
 }
 
 // 🔹 حذف مهمة
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   await connectToDatabase();
 
   const user = verifyUser(req);
