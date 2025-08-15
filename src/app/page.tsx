@@ -18,7 +18,10 @@ export default function Home() {
         pauseDuration={1500}
         showCursor={true}
         cursorCharacter="|"
+        variableSpeed={false} // قيمة افتراضية
+        onSentenceComplete={() => {}} // دالة فاضية
       />
+
       <div className={styles.links}>
         <Link href="/login">Login</Link>
         <Link href="/signup">Sign Up</Link>
