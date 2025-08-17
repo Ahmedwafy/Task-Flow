@@ -20,15 +20,18 @@ function verifyUser(req: NextRequest): TokenUser | null {
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   await connectToDatabase();
 
   const user = verifyUser(req);
-  if (!user)
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
+  const { id } = context.params;
   const body = await req.json();
+
   const update: any = {};
   if (body.title !== undefined) update.title = body.title;
   if (body.description !== undefined) update.description = body.description;
@@ -39,35 +42,40 @@ export async function PUT(
   }
 
   const filter =
-    user.role === "admin"
-      ? { _id: params.id }
-      : { _id: params.id, userId: user.id };
+    user.role === "admin" ? { _id: id } : { _id: id, userId: user.id };
+
   const updatedTask = await Task.findOneAndUpdate(filter, update, {
     new: true,
   });
 
-  if (!updatedTask)
+  if (!updatedTask) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
   return NextResponse.json(updatedTask);
 }
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   await connectToDatabase();
 
   const user = verifyUser(req);
-  if (!user)
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = context.params;
 
   const filter =
-    user.role === "admin"
-      ? { _id: params.id }
-      : { _id: params.id, userId: user.id };
+    user.role === "admin" ? { _id: id } : { _id: id, userId: user.id };
+
   const deletedTask = await Task.findOneAndDelete(filter);
 
-  if (!deletedTask)
+  if (!deletedTask) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
   return NextResponse.json({ message: "Task deleted successfully" });
 }
