@@ -20,7 +20,7 @@ function verifyUser(req: NextRequest): TokenUser | null {
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectToDatabase();
 
@@ -29,7 +29,7 @@ export async function PUT(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   const body = await req.json();
 
   const update: any = {};
@@ -57,7 +57,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectToDatabase();
 
@@ -66,7 +66,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   const filter =
     user.role === "admin" ? { _id: id } : { _id: id, userId: user.id };
