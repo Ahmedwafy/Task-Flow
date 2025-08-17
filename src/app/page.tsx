@@ -17,8 +17,8 @@ export default function Home() {
         pauseDuration={1500}
         showCursor={true}
         cursorCharacter="|"
-        variableSpeed={false} // قيمة افتراضية
-        onSentenceComplete={() => {}} // دالة فاضية
+        variableSpeed={false} // Default value
+        onSentenceComplete={() => {}} // Callback function when a sentence is completed
       />
 
       <div className={styles.links}>

@@ -1,22 +1,53 @@
-// src/app/dashboard/FilterBar.tsx
+// // src/app/dashboard/FilterBar.tsx
 "use client";
-import styles from "./Dashboard.module.scss";
 
-type FilterBarProps = {
-  filter: string;
-  setFilter: (filter: string) => void;
-};
+import styles from "@/app/dashboard/Dashboard.module.scss";
 
-export default function FilterBar({ filter, setFilter }: FilterBarProps) {
+export default function FilterBar({
+  filter,
+  setFilter,
+}: {
+  filter: "all" | "pending" | "in-progress" | "completed" | "overdue";
+  setFilter: (
+    f: "all" | "pending" | "in-progress" | "completed" | "overdue"
+  ) => void;
+}) {
+  const items = [
+    { key: "all", label: "All" },
+    { key: "pending", label: "Pending" },
+    { key: "in-progress", label: "In progress" },
+    { key: "completed", label: "Completed" },
+    { key: "overdue", label: "Overdue" }, // محسوبة من dueDate
+  ];
+
   return (
     <div className={styles.filterBar}>
-      {["all", "pending", "in-progress", "completed"].map((e) => (
+      {items.map((i) => (
         <button
-          key={e}
-          className={`${styles.btn} ${filter === e ? styles.activeFilter : ""}`}
-          onClick={() => setFilter(e)}
+          key={i.key}
+          className={
+            filter ===
+            (i.key as
+              | "all"
+              | "pending"
+              | "in-progress"
+              | "completed"
+              | "overdue")
+              ? styles.activeFilter
+              : ""
+          }
+          onClick={() =>
+            setFilter(
+              i.key as
+                | "all"
+                | "pending"
+                | "in-progress"
+                | "completed"
+                | "overdue"
+            )
+          }
         >
-          {e}
+          {i.label}
         </button>
       ))}
     </div>

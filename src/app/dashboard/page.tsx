@@ -1,57 +1,46 @@
-// src/app/dashboard/page.tsx
-"use client";
-import { Task } from "@/types/task";
-import { useEffect, useState } from "react";
-import styles from "./Dashboard.module.scss";
 import LogoutButton from "@/app/components/LogOutBtn/LogoutButton";
-import TasksList from "./TasksList";
-import TaskForm from "./TaskForm";
-import FilterBar from "./FilterBar";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { redirect } from "next/navigation";
+import styles from "./Dashboard.module.scss";
+import DashboardClient from "./DashboardClient";
 
-export default function DashboardPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [filter, setFilter] = useState("all");
-  const [loading, setLoading] = useState(true);
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
-  // جلب المهام من الـ API
-  const fetchTasks = async () => {
-    setLoading(true);
-    const res = await fetch(`/api/tasks`, {
-      method: "GET",
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setTasks(data);
-    }
-    setLoading(false);
-  };
+type Payload = {
+  id: string;
+  email?: string;
+  name?: string;
+  role?: "user" | "admin";
+};
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  if (!token) redirect("/login");
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "all") return true;
-    return task.status === filter;
-  });
-  console.log("Tasks:", tasks);
+  let user: Payload | null = null;
+  try {
+    user = jwt.verify(token, JWT_SECRET) as Payload;
+  } catch {
+    redirect("/login");
+  }
 
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
-        <h1>📋 TaskFlow Dashboard</h1>
+        <h1>TaskFlow Dashboard</h1>
         <LogoutButton />
       </header>
 
-      <FilterBar filter={filter} setFilter={setFilter} />
-
-      <TaskForm onTaskAdded={fetchTasks} />
-
-      {loading ? (
-        <p>Loading tasks...</p>
-      ) : (
-        <TasksList tasks={filteredTasks} onTasksChange={fetchTasks} />
-      )}
+      {/* send user data to client */}
+      <DashboardClient
+        user={{
+          role: user?.role || "user",
+          name: user?.name || "",
+          email: user?.email || "",
+        }}
+      />
     </div>
   );
 }

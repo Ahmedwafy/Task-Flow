@@ -5,6 +5,7 @@ export interface ITask extends Document {
   description: string;
   status: "pending" | "in-progress" | "completed";
   userId: string;
+  dueDate?: Date; // new
   createdAt: Date;
 }
 
@@ -18,6 +19,7 @@ const TaskSchema: Schema = new Schema(
       default: "pending",
     },
     userId: { type: String, required: true },
+    dueDate: { type: Date, default: null }, // new
   },
   { timestamps: true }
 );
